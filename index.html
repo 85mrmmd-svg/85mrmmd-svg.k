@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Signup with Google Sheet</title>
+</head>
+<body>
+    <h2>ثبت‌نام</h2>
+    <input id="su_name" placeholder="نام"><br>
+    <input id="su_email" placeholder="ایمیل"><br>
+    <input id="su_pass" placeholder="رمز عبور"><br>
+    <button onclick="signup()">ثبت‌نام</button>
+
+    <hr>
+
+    <h2>ورود</h2>
+    <input id="li_email" placeholder="ایمیل"><br>
+    <input id="li_pass" placeholder="رمز عبور"><br>
+    <button onclick="login()">ورود</button>
+
+    <script>
+        const API = "https://sheetdb.io/api/v1/1vxl292eql9d0";
+
+        // ثبت‌نام
+        async function signup() {
+            let name = document.getElementById("su_name").value;
+            let email = document.getElementById("su_email").value;
+            let pass = document.getElementById("su_pass").value;
+
+            // بررسی وجود ایمیل در ستون B
+            let check = await fetch(`${API}/search?B=${email}`);
+            let exists = await check.json();
+
+            if (exists.length > 0) {
+                alert("این ایمیل قبلاً ثبت شده است!");
+                return;
+            }
+
+            // ارسال اطلاعات جدید به ستون‌های A/B/C
+            await fetch(API, {
+                method: "POST",
+                body: JSON.stringify({ data: [{ A: name, B: email, C: pass }] }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            alert("ثبت‌نام با موفقیت انجام شد!");
+        }
+
+        // ورود
+        async function login() {
+            let email = document.getElementById("li_email").value;
+            let pass = document.getElementById("li_pass").value;
+
+            // جستجو بر اساس ستون‌های B و C
+            let response = await fetch(`${API}/search?B=${email}&C=${pass}`);
+            let result = await response.json();
+
+            if (result.length > 0) {
+                alert("ورود موفق — خوش آمدید " + result[0].A);
+            } else {
+                alert("ایمیل یا رمز عبور اشتباه است");
+            }
+        }
+    </script>
+</body>
+</html>
