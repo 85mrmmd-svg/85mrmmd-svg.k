@@ -1,66 +1,1708 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Login / Signup with Google Sheet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه آنلاین</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* استایل‌های عمومی */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* نوبار */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #f3f4f6;
+            color: #2563eb;
+        }
+        
+        .nav-links a i {
+            margin-left: 0.5rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #4b5563;
+            cursor: pointer;
+        }
+        
+        /* دکمه‌ها */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #059669;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+        }
+        
+        .btn-outline:hover {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        /* صفحه اصلی */
+        .hero {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .hero-content {
+            flex: 1;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        /* ویژگی‌ها */
+        .features {
+            padding: 4rem 2rem;
+            background-color: white;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #1f2937;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: #dbeafe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+        
+        .feature-icon i {
+            font-size: 2rem;
+            color: #2563eb;
+        }
+        
+        /* آگهی‌ها */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem 0;
+        }
+        
+        .ad-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        .ad-image {
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ad-image i {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        .ad-content {
+            padding: 1.5rem;
+        }
+        
+        .ad-content h3 {
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        
+        .ad-description {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .ad-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .ad-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        
+        .ad-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .ad-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* فرم‌ها */
+        .auth-container, .form-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .auth-card, .form-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-header h1 {
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-header p {
+            color: #6b7280;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .form-group label i {
+            margin-left: 0.5rem;
+            color: #6b7280;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .char-counter {
+            text-align: left;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+        
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        /* داشبورد */
+        .dashboard {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .dashboard-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-avatar i {
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-icon i {
+            font-size: 1.5rem;
+        }
+        
+        /* فوتور */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #e5e7eb;
+        }
+        
+        .footer-section a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+        
+        .simple-footer {
+            background: #1f2937;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+        
+        /* صفحات مختلف */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>ثبت‌نام</h2>
-    <input id="su_name" placeholder="نام"><br>
-    <input id="su_email" placeholder="ایمیل"><br>
-    <input id="su_pass" placeholder="رمز عبور"><br>
-    <button onclick="signup()">ثبت‌نام</button>
+    <div class="container" id="app">
+        <!-- نوبار -->
+        <header>
+            <nav class="navbar">
+                <div class="logo" onclick="showPage('home')" style="cursor: pointer;">
+                    <i class="fas fa-store"></i>
+                    <span>فروشگاه آنلاین</span>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="#" onclick="showPage('home')" id="home-link" class="active">
+                        <i class="fas fa-home"></i> صفحه اصلی
+                    </a>
+                    <a href="#" onclick="showPage('view-ads')" id="ads-link">
+                        <i class="fas fa-list"></i> مشاهده آگهی‌ها
+                    </a>
+                    <a href="#" onclick="showPage('login')" id="login-link">
+                        <i class="fas fa-user"></i> ورود / ثبت‌نام
+                    </a>
+                    <a href="#" onclick="showPage('dashboard')" id="dashboard-link" style="display: none;">
+                        <i class="fas fa-tachometer-alt"></i> داشبورد
+                    </a>
+                    <a href="#" onclick="showPage('add-ad')" id="add-ad-link" style="display: none;">
+                        <i class="fas fa-plus-circle"></i> ثبت آگهی
+                    </a>
+                    <a href="#" onclick="logout()" id="logout-link" style="display: none;">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </a>
+                </div>
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </header>
 
-    <hr>
+        <!-- صفحه اصلی -->
+        <main class="page active" id="home-page">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>به بزرگ‌ترین بازار آنلاین خوش آمدید</h1>
+                    <p>هر چیزی که نیاز دارید را اینجا پیدا کنید و یا کالاهای خود را به فروش برسانید</p>
+                    <div class="hero-buttons">
+                        <a href="#" onclick="showPage('view-ads')" class="btn btn-primary">
+                            <i class="fas fa-shopping-cart"></i> خرید از آگهی‌ها
+                        </a>
+                        <a href="#" onclick="checkAuthForAdd()" class="btn btn-secondary">
+                            <i class="fas fa-bullhorn"></i> ثبت آگهی جدید
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div style="width: 400px; height: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-store" style="font-size: 6rem; color: white; opacity: 0.8;"></i>
+                    </div>
+                </div>
+            </section>
 
-    <h2>ورود</h2>
-    <input id="li_email" placeholder="ایمیل"><br>
-    <input id="li_pass" placeholder="رمز عبور"><br>
-    <button onclick="login()">ورود</button>
+            <section class="features">
+                <h2>چرا از فروشگاه ما استفاده کنیم؟</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>امنیت بالا</h3>
+                        <p>اطلاعات شما با بالاترین سطح امنیتی محافظت می‌شود</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>سریع و آسان</h3>
+                        <p>ثبت آگهی در کمتر از ۲ دقیقه</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>جامعه بزرگ</h3>
+                        <p>هزاران کاربر فعال روزانه</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>پشتیبانی ۲۴/۷</h3>
+                        <p>پشتیبانی آنلاین در تمام ساعات</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-ads" style="padding: 4rem 2rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #1f2937;">آگهی‌های اخیر</h2>
+                <div id="ads-container" class="ads-grid">
+                    <div class="loading" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #2563eb;"></i>
+                        <p>در حال بارگذاری آگهی‌ها...</p>
+                    </div>
+                </div>
+                <div class="view-all" style="text-align: center; margin-top: 2rem;">
+                    <a href="#" onclick="showPage('view-ads')" class="btn btn-outline">
+                        مشاهده همه آگهی‌ها
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- صفحه مشاهده آگهی‌ها -->
+        <main class="page" id="view-ads-page">
+            <div class="dashboard" style="max-width: none;">
+                <div class="page-header" style="margin-bottom: 2rem;">
+                    <h1 style="color: #1f2937; margin-bottom: 0.5rem;">
+                        <i class="fas fa-list"></i> آگهی‌های فروش
+                    </h1>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                        کالاهای جدید و با کیفیت را از فروشندگان معتبر خریداری کنید
+                    </p>
+                    
+                    <div class="search-filter" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                        <div class="search-box" style="flex: 1; min-width: 200px; position: relative;">
+                            <i class="fas fa-search" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #6b7280;"></i>
+                            <input type="text" id="search-input" placeholder="جستجوی در آگهی‌ها..." style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-family: 'Vazirmatn', sans-serif;">
+                        </div>
+                        <select id="category-filter" style="padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-family: 'Vazirmatn', sans-serif;">
+                            <option value="">همه دسته‌بندی‌ها</option>
+                            <option value="الکترونیک">الکترونیک</option>
+                            <option value="خانگی">لوازم خانگی</option>
+                            <option value="پوشاک">پوشاک</option>
+                            <option value="کتاب">کتاب و لوازم التحریر</option>
+                            <option value="ورزشی">لوازم ورزشی</option>
+                            <option value="متفرقه">متفرقه</option>
+                        </select>
+                        <select id="sort-filter" style="padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-family: 'Vazirmatn', sans-serif;">
+                            <option value="newest">جدیدترین</option>
+                            <option value="oldest">قدیمی‌ترین</option>
+                            <option value="price_high">قیمت (بیشترین)</option>
+                            <option value="price_low">قیمت (کمترین)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="ads-grid" id="all-ads-container">
+                    <!-- آگهی‌ها اینجا نمایش داده می‌شوند -->
+                </div>
+                
+                <div id="no-ads-found" style="display: none; text-align: center; padding: 4rem 2rem;">
+                    <div class="empty-state">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #374151; margin-bottom: 0.5rem;">آگهی‌ای یافت نشد</h3>
+                        <p style="color: #6b7280; margin-bottom: 1.5rem;">هیچ آگهی مطابق با جستجوی شما وجود ندارد</p>
+                        <button onclick="clearFilters()" class="btn btn-primary">حذف فیلترها</button>
+                    </div>
+                </div>
+                
+                <div class="pagination" id="pagination" style="display: none; justify-content: center; align-items: center; gap: 1rem; margin-top: 2rem;">
+                    <button id="prev-page" class="btn btn-outline">
+                        <i class="fas fa-arrow-right"></i> قبلی
+                    </button>
+                    <span id="page-info" style="color: #4b5563;">صفحه 1 از 1</span>
+                    <button id="next-page" class="btn btn-outline">
+                        بعدی <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- صفحه ورود/ثبت‌نام -->
+        <main class="page" id="login-page">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h1><i class="fas fa-user-circle"></i> ورود به حساب کاربری</h1>
+                        <p>لطفا اطلاعات خود را وارد کنید</p>
+                    </div>
+                    
+                    <form id="login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> شماره تلفن</label>
+                            <input type="tel" id="phone" name="phone" placeholder="09xxxxxxxxx" required pattern="09[0-9]{9}" maxlength="11">
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> رمز عبور</label>
+                            <input type="password" id="password" name="password" placeholder="رمز عبور" required minlength="6">
+                            <div class="error-message" id="password-error"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-sign-in-alt"></i> ورود به حساب
+                        </button>
+                        
+                        <div class="auth-links" style="text-align: center; margin-top: 1rem;">
+                            <p style="color: #6b7280;">کاربر جدید هستید؟ 
+                                <a href="#" onclick="showRegisterForm()" style="color: #2563eb; text-decoration: none; font-weight: 500;">ثبت‌نام کنید</a>
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <form id="register-form" class="auth-form" style="display: none;">
+                        <div class="form-group">
+                            <label for="reg-name"><i class="fas fa-user"></i> نام کامل</label>
+                            <input type="text" id="reg-name" name="name" placeholder="نام و نام خانوادگی" required>
+                            <div class="error-message" id="name-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-phone"><i class="fas fa-phone"></i> شماره تلفن</label>
+                            <input type="tel" id="reg-phone" name="phone" placeholder="09xxxxxxxxx" required pattern="09[0-9]{9}" maxlength="11">
+                            <div class="error-message" id="reg-phone-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reg-password"><i class="fas fa-lock"></i> رمز عبور</label>
+                            <input type="password" id="reg-password" name="password" placeholder="حداقل ۶ کاراکتر" required minlength="6">
+                            <div class="error-message" id="reg-password-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password"><i class="fas fa-lock"></i> تأیید رمز عبور</label>
+                            <input type="password" id="confirm-password" name="confirm_password" placeholder="تکرار رمز عبور" required minlength="6">
+                            <div class="error-message" id="confirm-error"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i> ثبت‌نام
+                        </button>
+                        
+                        <div class="auth-links" style="text-align: center; margin-top: 1rem;">
+                            <p style="color: #6b7280;">قبلا ثبت‌نام کرده‌اید؟ 
+                                <a href="#" onclick="showLoginForm()" style="color: #2563eb; text-decoration: none; font-weight: 500;">ورود به حساب</a>
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <div class="auth-footer" style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                        <p style="color: #6b7280; font-size: 0.875rem;">
+                            با ورود یا ثبت‌نام، شما با <a href="#" style="color: #2563eb;">قوانین و مقررات</a> موافقت می‌کنید.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- صفحه داشبورد -->
+        <main class="page" id="dashboard-page">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <h1 id="user-greeting">خوش آمدید، کاربر!</h1>
+                            <p id="user-phone-display" style="color: #6b7280;"></p>
+                        </div>
+                    </div>
+                    <a href="#" onclick="showPage('add-ad')" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> ثبت آگهی جدید
+                    </a>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e3f2fd;">
+                            <i class="fas fa-bullhorn" style="color: #2196f3;"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 style="color: #374151; font-size: 0.875rem;">آگهی‌های فعال</h3>
+                            <p id="active-ads" style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #f3e5f5;">
+                            <i class="fas fa-eye" style="color: #9c27b0;"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 style="color: #374151; font-size: 0.875rem;">بازدید آگهی‌ها</h3>
+                            <p id="total-views" style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background-color: #e8f5e9;">
+                            <i class="fas fa-calendar-alt" style="color: #4caf50;"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 style="color: #374151; font-size: 0.875rem;">عضویت از</h3>
+                            <p id="join-date" style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">امروز</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-section" style="margin-top: 2rem;">
+                    <h2 style="color: #1f2937; margin-bottom: 1.5rem;">
+                        <i class="fas fa-list"></i> آگهی‌های شما
+                    </h2>
+                    <div id="user-ads-container" class="ads-grid">
+                        <div class="loading" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #2563eb;"></i>
+                            <p>در حال بارگذاری آگهی‌های شما...</p>
+                        </div>
+                    </div>
+                    <div id="no-ads-message" style="display: none; text-align: center; padding: 4rem 2rem;">
+                        <div class="empty-state">
+                            <i class="fas fa-box-open" style="font-size: 4rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+                            <h3 style="color: #374151; margin-bottom: 0.5rem;">هنوز آگهی ثبت نکرده‌اید</h3>
+                            <p style="color: #6b7280; margin-bottom: 1.5rem;">اولین آگهی خود را ثبت کنید و کالاهای خود را به فروش برسانید</p>
+                            <a href="#" onclick="showPage('add-ad')" class="btn btn-primary">ثبت اولین آگهی</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- صفحه ثبت آگهی جدید -->
+        <main class="page" id="add-ad-page">
+            <div class="form-container">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h1><i class="fas fa-bullhorn"></i> ثبت آگهی جدید</h1>
+                        <p>اطلاعات کالای خود را وارد کنید</p>
+                    </div>
+                    
+                    <form id="add-ad-form">
+                        <div class="form-group">
+                            <label for="ad-name"><i class="fas fa-tag"></i> عنوان آگهی *</label>
+                            <input type="text" id="ad-name" name="nameag" placeholder="مثال: گوشی موبایل سامسونگ گلکسی A32" required>
+                            <div class="error-message" id="ad-name-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ad-price"><i class="fas fa-money-bill-wave"></i> قیمت (تومان) *</label>
+                            <input type="number" id="ad-price" name="price" placeholder="مثال: 5000000" required min="0">
+                            <div class="error-message" id="ad-price-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ad-phone"><i class="fas fa-phone"></i> شماره تماس *</label>
+                            <input type="tel" id="ad-phone" name="phoneag" placeholder="09xxxxxxxxx" required pattern="09[0-9]{9}" maxlength="11">
+                            <div class="error-message" id="ad-phone-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ad-description"><i class="fas fa-align-left"></i> توضیحات آگهی *</label>
+                            <textarea id="ad-description" name="rules" rows="6" placeholder="ویژگی‌های کالا، شرایط فروش و هر اطلاعات دیگری که خریدار باید بداند..." required></textarea>
+                            <div class="error-message" id="ad-description-error"></div>
+                            <div class="char-counter">
+                                <span id="char-count">0</span> / 1000 کاراکتر
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-filter"></i> دسته‌بندی</label>
+                            <select id="ad-category" name="category">
+                                <option value="الکترونیک">الکترونیک</option>
+                                <option value="خانگی">لوازم خانگی</option>
+                                <option value="پوشاک">پوشاک</option>
+                                <option value="کتاب">کتاب و لوازم التحریر</option>
+                                <option value="ورزشی">لوازم ورزشی</option>
+                                <option value="متفرقه">متفرقه</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> شهر</label>
+                            <input type="text" id="ad-city" name="city" placeholder="مثال: تهران">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-check-circle"></i> ثبت آگهی
+                            </button>
+                            <a href="#" onclick="showPage('dashboard')" class="btn btn-outline btn-block">
+                                <i class="fas fa-times"></i> انصراف
+                            </a>
+                        </div>
+                    </form>
+                    
+                    <div class="form-footer" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                        <p style="color: #6b7280; font-size: 0.875rem;">
+                            <i class="fas fa-info-circle"></i> پس از ثبت، آگهی شما پس از تأیید در سایت نمایش داده خواهد شد.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- فوتور -->
+        <footer id="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>فروشگاه آنلاین</h3>
+                    <p>بستری امن برای خرید و فروش کالاهای نو و دست‌دوم</p>
+                </div>
+                <div class="footer-section">
+                    <h3>لینک‌های مفید</h3>
+                    <a href="#" onclick="showPage('view-ads')">مشاهده آگهی‌ها</a>
+                    <a href="#" onclick="showPage('dashboard')">داشبورد کاربری</a>
+                    <a href="#" onclick="checkAuthForAdd()">ثبت آگهی جدید</a>
+                </div>
+                <div class="footer-section">
+                    <h3>تماس با ما</h3>
+                    <p><i class="fas fa-phone"></i> ۰۲۱-۱۲۳۴۵۶۷۸</p>
+                    <p><i class="fas fa-envelope"></i> info@example.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© ۲۰۲۴ فروشگاه آنلاین. تمامی حقوق محفوظ است.</p>
+            </div>
+        </footer>
+
+        <!-- فوتور ساده -->
+        <footer class="simple-footer" id="simple-footer" style="display: none;">
+            <p>© ۲۰۲۴ فروشگاه آنلاین. تمامی حقوق محفوظ است.</p>
+        </footer>
+    </div>
 
     <script>
-        const API = "https://sheetdb.io/api/v1/1vxl292eql9d0";
-
-        // ثبت‌نام
-        async function signup() {
-            let name = document.getElementById("su_name").value;
-            let email = document.getElementById("su_email").value;
-            let pass = document.getElementById("su_pass").value;
-
-            // بررسی وجود ایمیل در ستون B
-            let check = await fetch(`${API}/search?B=${email}`);
-            let exists = await check.json();
-
-            if (exists.length > 0) {
-                alert("این ایمیل قبلاً ثبت شده است!");
+        // تنظیمات API
+        const API_URL = 'https://sheetdb.io/api/v1/1vxl292eql9d0';
+        
+        // کاربر فعلی
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        
+        // وضعیت صفحه‌بندی
+        let currentPage = 1;
+        let itemsPerPage = 12;
+        let filteredAds = [];
+        
+        // مقداردهی اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbar();
+            loadRecentAds();
+            setupEventListeners();
+            
+            // اگر کاربر وارد شده باشد، داشبورد را نشان بده
+            if (currentUser) {
+                showPage('dashboard');
+            }
+        });
+        
+        // مدیریت منوی موبایل
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+        
+        // تغییر صفحه
+        function showPage(pageId) {
+            // بستن منوی موبایل
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // مخفی کردن تمام صفحات
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // نمایش صفحه انتخابی
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            // به‌روزرسانی نوبار
+            updateNavbar(pageId);
+            
+            // بارگذاری داده‌های موردنیاز
+            switch(pageId) {
+                case 'home':
+                    loadRecentAds();
+                    document.getElementById('main-footer').style.display = 'block';
+                    document.getElementById('simple-footer').style.display = 'none';
+                    break;
+                case 'view-ads':
+                    loadAllAds();
+                    document.getElementById('main-footer').style.display = 'block';
+                    document.getElementById('simple-footer').style.display = 'none';
+                    break;
+                case 'dashboard':
+                    if (!currentUser) {
+                        showPage('login');
+                        return;
+                    }
+                    loadUserDashboard();
+                    document.getElementById('main-footer').style.display = 'none';
+                    document.getElementById('simple-footer').style.display = 'block';
+                    break;
+                case 'add-ad':
+                    if (!currentUser) {
+                        showPage('login');
+                        return;
+                    }
+                    setupAddAdForm();
+                    document.getElementById('main-footer').style.display = 'none';
+                    document.getElementById('simple-footer').style.display = 'block';
+                    break;
+                case 'login':
+                    document.getElementById('main-footer').style.display = 'none';
+                    document.getElementById('simple-footer').style.display = 'block';
+                    break;
+            }
+        }
+        
+        // به‌روزرسانی نوبار
+        function updateNavbar(activePage = 'home') {
+            // به‌روزرسانی لینک فعال
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.getElementById(activePage + '-link').classList.add('active');
+            
+            // نمایش/مخفی کردن لینک‌ها بر اساس وضعیت ورود
+            const isLoggedIn = currentUser !== null;
+            
+            document.getElementById('login-link').style.display = isLoggedIn ? 'none' : 'block';
+            document.getElementById('dashboard-link').style.display = isLoggedIn ? 'block' : 'none';
+            document.getElementById('add-ad-link').style.display = isLoggedIn ? 'block' : 'none';
+            document.getElementById('logout-link').style.display = isLoggedIn ? 'block' : 'none';
+        }
+        
+        // تنظیم رویدادها
+        function setupEventListeners() {
+            // فرم ورود
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                login();
+            });
+            
+            // فرم ثبت‌نام
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                register();
+            });
+            
+            // فرم ثبت آگهی
+            document.getElementById('add-ad-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                createAd();
+            });
+            
+            // شمارش کاراکترهای توضیحات آگهی
+            document.getElementById('ad-description').addEventListener('input', function() {
+                const charCount = document.getElementById('char-count');
+                charCount.textContent = this.value.length;
+                if (this.value.length > 1000) {
+                    this.value = this.value.substring(0, 1000);
+                    charCount.textContent = 1000;
+                }
+            });
+            
+            // فیلترهای صفحه آگهی‌ها
+            document.getElementById('search-input').addEventListener('input', filterAds);
+            document.getElementById('category-filter').addEventListener('change', filterAds);
+            document.getElementById('sort-filter').addEventListener('change', filterAds);
+            
+            // صفحه‌بندی
+            document.getElementById('prev-page').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayAds();
+                }
+            });
+            
+            document.getElementById('next-page').addEventListener('click', function() {
+                const totalPages = Math.ceil(filteredAds.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayAds();
+                }
+            });
+        }
+        
+        // تابع کمکی برای فراخوانی API
+        async function callAPI(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(endpoint, options);
+                return await response.json();
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+        
+        // ثبت‌نام کاربر
+        async function register() {
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // اعتبارسنجی
+            let isValid = true;
+            
+            // اعتبارسنجی نام
+            if (name.length < 3) {
+                document.getElementById('name-error').textContent = 'نام باید حداقل ۳ کاراکتر باشد';
+                isValid = false;
+            } else {
+                document.getElementById('name-error').textContent = '';
+            }
+            
+            // اعتبارسنجی شماره تلفن
+            const phoneRegex = /^09[0-9]{9}$/;
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('reg-phone-error').textContent = 'شماره تلفن معتبر نیست';
+                isValid = false;
+            } else {
+                document.getElementById('reg-phone-error').textContent = '';
+            }
+            
+            // اعتبارسنجی رمز عبور
+            if (password.length < 6) {
+                document.getElementById('reg-password-error').textContent = 'رمز عبور باید حداقل ۶ کاراکتر باشد';
+                isValid = false;
+            } else {
+                document.getElementById('reg-password-error').textContent = '';
+            }
+            
+            // اعتبارسنجی تأیید رمز عبور
+            if (password !== confirmPassword) {
+                document.getElementById('confirm-error').textContent = 'رمز عبور و تأیید آن یکسان نیستند';
+                isValid = false;
+            } else {
+                document.getElementById('confirm-error').textContent = '';
+            }
+            
+            if (!isValid) return;
+            
+            try {
+                // بررسی آیا کاربر قبلاً ثبت‌نام کرده است
+                const usersResponse = await callAPI(`${API_URL}?sheet=users`);
+                const existingUsers = Array.isArray(usersResponse) ? usersResponse : [];
+                
+                const userExists = existingUsers.some(user => user.phone === phone);
+                if (userExists) {
+                    document.getElementById('reg-phone-error').textContent = 'این شماره قبلاً ثبت شده است';
+                    return;
+                }
+                
+                // ثبت کاربر جدید در Google Sheets
+                const newUser = {
+                    name: name,
+                    phone: phone,
+                    password: password,
+                    created_at: new Date().toISOString()
+                };
+                
+                // اضافه کردن کاربر به Google Sheets
+                const response = await callAPI(`${API_URL}?sheet=users`, 'POST', {
+                    data: [newUser]
+                });
+                
+                if (response && response.created > 0) {
+                    // ذخیره کاربر در localStorage
+                    currentUser = {
+                        id: Date.now(),
+                        name: name,
+                        phone: phone,
+                        createdAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    alert('ثبت‌نام با موفقیت انجام شد!');
+                    showPage('dashboard');
+                } else {
+                    throw new Error('خطا در ثبت‌نام');
+                }
+            } catch (error) {
+                console.error('Registration Error:', error);
+                alert('خطا در ثبت‌نام. لطفاً دوباره تلاش کنید.');
+            }
+        }
+        
+        // ورود کاربر
+        async function login() {
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // اعتبارسنجی
+            let isValid = true;
+            const phoneRegex = /^09[0-9]{9}$/;
+            
+            if (!phoneRegex.test(phone)) {
+                document.getElementById('phone-error').textContent = 'شماره تلفن معتبر نیست';
+                isValid = false;
+            } else {
+                document.getElementById('phone-error').textContent = '';
+            }
+            
+            if (password.length < 6) {
+                document.getElementById('password-error').textContent = 'رمز عبور باید حداقل ۶ کاراکتر باشد';
+                isValid = false;
+            } else {
+                document.getElementById('password-error').textContent = '';
+            }
+            
+            if (!isValid) return;
+            
+            try {
+                // دریافت کاربران از Google Sheets
+                const usersResponse = await callAPI(`${API_URL}?sheet=users`);
+                const users = Array.isArray(usersResponse) ? usersResponse : [];
+                
+                // جستجوی کاربر
+                const user = users.find(u => u.phone === phone && u.password === password);
+                
+                if (user) {
+                    // ذخیره کاربر در localStorage
+                    currentUser = {
+                        id: Date.now(),
+                        name: user.name,
+                        phone: user.phone,
+                        createdAt: user.created_at || new Date().toISOString()
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    
+                    alert('ورود با موفقیت انجام شد!');
+                    showPage('dashboard');
+                } else {
+                    alert('شماره تلفن یا رمز عبور اشتباه است');
+                }
+            } catch (error) {
+                console.error('Login Error:', error);
+                alert('خطا در ورود. لطفاً دوباره تلاش کنید.');
+            }
+        }
+        
+        // خروج کاربر
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateNavbar();
+            showPage('home');
+        }
+        
+        // بررسی احراز هویت برای ثبت آگهی
+        function checkAuthForAdd() {
+            if (currentUser) {
+                showPage('add-ad');
+            } else {
+                showPage('login');
+            }
+        }
+        
+        // بارگذاری آگهی‌های اخیر
+        async function loadRecentAds() {
+            const container = document.getElementById('ads-container');
+            
+            try {
+                const adsResponse = await callAPI(`${API_URL}?sheet=ads`);
+                const ads = Array.isArray(adsResponse) ? adsResponse : [];
+                
+                if (ads.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; padding: 2rem; grid-column: 1 / -1; color: #6b7280;">هنوز آگهی‌ای ثبت نشده است.</p>';
+                    return;
+                }
+                
+                // مرتب‌سازی بر اساس تاریخ (جدیدترین اول)
+                const recentAds = [...ads].sort((a, b) => {
+                    const dateA = a.created_at ? new Date(a.created_at) : new Date(0);
+                    const dateB = b.created_at ? new Date(b.created_at) : new Date(0);
+                    return dateB - dateA;
+                }).slice(0, 6);
+                
+                container.innerHTML = '';
+                recentAds.forEach(ad => {
+                    const adCard = createAdCard(ad, false);
+                    container.innerHTML += adCard;
+                });
+            } catch (error) {
+                console.error('Load Ads Error:', error);
+                container.innerHTML = '<p style="text-align: center; padding: 2rem; grid-column: 1 / -1; color: #ef4444;">خطا در بارگذاری آگهی‌ها</p>';
+            }
+        }
+        
+        // بارگذاری همه آگهی‌ها
+        async function loadAllAds() {
+            try {
+                const adsResponse = await callAPI(`${API_URL}?sheet=ads`);
+                const allAds = Array.isArray(adsResponse) ? adsResponse : [];
+                
+                // مرتب‌سازی بر اساس تاریخ (جدیدترین اول)
+                filteredAds = [...allAds].sort((a, b) => {
+                    const dateA = a.created_at ? new Date(a.created_at) : new Date(0);
+                    const dateB = b.created_at ? new Date(b.created_at) : new Date(0);
+                    return dateB - dateA;
+                });
+                
+                currentPage = 1;
+                displayAds();
+            } catch (error) {
+                console.error('Load All Ads Error:', error);
+                document.getElementById('all-ads-container').innerHTML = '<p style="text-align: center; padding: 2rem; grid-column: 1 / -1; color: #ef4444;">خطا در بارگذاری آگهی‌ها</p>';
+            }
+        }
+        
+        // فیلتر کردن آگهی‌ها
+        function filterAds() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const sortBy = document.getElementById('sort-filter').value;
+            
+            filteredAds = filteredAds.filter(ad => {
+                const matchesSearch = !searchTerm || 
+                    (ad.nameag && ad.nameag.toLowerCase().includes(searchTerm)) || 
+                    (ad.rules && ad.rules.toLowerCase().includes(searchTerm));
+                
+                const matchesCategory = !category || ad.category === category;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            // مرتب‌سازی
+            filteredAds.sort((a, b) => {
+                switch(sortBy) {
+                    case 'newest':
+                        const dateA = a.created_at ? new Date(a.created_at) : new Date(0);
+                        const dateB = b.created_at ? new Date(b.created_at) : new Date(0);
+                        return dateB - dateA;
+                    case 'oldest':
+                        const dateA2 = a.created_at ? new Date(a.created_at) : new Date(0);
+                        const dateB2 = b.created_at ? new Date(b.created_at) : new Date(0);
+                        return dateA2 - dateB2;
+                    case 'price_high':
+                        return (parseInt(b.price) || 0) - (parseInt(a.price) || 0);
+                    case 'price_low':
+                        return (parseInt(a.price) || 0) - (parseInt(b.price) || 0);
+                    default:
+                        return 0;
+                }
+            });
+            
+            currentPage = 1;
+            displayAds();
+        }
+        
+        // نمایش آگهی‌ها
+        function displayAds() {
+            const container = document.getElementById('all-ads-container');
+            const noAdsFound = document.getElementById('no-ads-found');
+            const pagination = document.getElementById('pagination');
+            
+            if (filteredAds.length === 0) {
+                container.innerHTML = '';
+                noAdsFound.style.display = 'block';
+                pagination.style.display = 'none';
                 return;
             }
-
-            // ارسال اطلاعات جدید به ستون‌های A/B/C
-            await fetch(API, {
-                method: "POST",
-                body: JSON.stringify({ data: [{ A: name, B: email, C: pass }] }),
-                headers: { "Content-Type": "application/json" }
+            
+            noAdsFound.style.display = 'none';
+            
+            // محاسبه شروع و پایان برای صفحه‌بندی
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageAds = filteredAds.slice(startIndex, endIndex);
+            
+            // نمایش آگهی‌ها
+            container.innerHTML = '';
+            pageAds.forEach(ad => {
+                const adCard = createAdCard(ad, true);
+                container.innerHTML += adCard;
             });
-
-            alert("ثبت‌نام با موفقیت انجام شد!");
-        }
-
-        // ورود
-        async function login() {
-            let email = document.getElementById("li_email").value;
-            let pass = document.getElementById("li_pass").value;
-
-            // جستجو بر اساس ستون‌های B و C
-            let response = await fetch(`${API}/search?B=${email}&C=${pass}`);
-            let result = await response.json();
-
-            if (result.length > 0) {
-                alert("ورود موفق — خوش آمدید " + result[0].A);
+            
+            // نمایش صفحه‌بندی
+            const totalPages = Math.ceil(filteredAds.length / itemsPerPage);
+            if (totalPages > 1) {
+                document.getElementById('page-info').textContent = `صفحه ${currentPage} از ${totalPages}`;
+                document.getElementById('prev-page').disabled = currentPage === 1;
+                document.getElementById('next-page').disabled = currentPage === totalPages;
+                pagination.style.display = 'flex';
             } else {
-                alert("ایمیل یا رمز عبور اشتباه است");
+                pagination.style.display = 'none';
             }
+        }
+        
+        // ایجاد کارت آگهی
+        function createAdCard(ad, showDetails = true) {
+            const isOwner = currentUser && ad.user_phone === currentUser.phone;
+            
+            return `
+                <div class="ad-card">
+                    <div class="ad-image">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="ad-content">
+                        <div class="ad-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <h3 style="flex: 1; margin-bottom: 0;">${ad.nameag || 'بدون عنوان'}</h3>
+                            ${ad.category ? `<span class="ad-category" style="background-color: #e5e7eb; color: #374151; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">${ad.category}</span>` : ''}
+                        </div>
+                        <p class="ad-description">${(ad.rules || '').substring(0, 100)}...</p>
+                        <div class="ad-footer">
+                            <div class="ad-info" style="flex: 1;">
+                                <span class="ad-price">${parseInt(ad.price || 0).toLocaleString()} تومان</span>
+                                ${ad.city ? `<span class="ad-city" style="color: #6b7280; font-size: 0.875rem; margin-right: 1rem;"><i class="fas fa-map-marker-alt"></i> ${ad.city}</span>` : ''}
+                            </div>
+                            <div class="ad-actions" style="display: flex; gap: 0.5rem;">
+                                <a href="tel:${ad.phoneag}" class="btn-action call" style="background-color: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; text-decoration: none; font-size: 0.875rem;">
+                                    <i class="fas fa-phone"></i> تماس
+                                </a>
+                                ${isOwner ? `
+                                    <button onclick="editAd('${ad.id || ''}')" class="btn-action edit" style="background-color: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; border: none; font-size: 0.875rem; cursor: pointer;">
+                                        <i class="fas fa-edit"></i> ویرایش
+                                    </button>
+                                    <button onclick="deleteAd('${ad.id || ''}')" class="btn-action delete" style="background-color: #ef4444; color: white; padding: 0.5rem 1rem; border-radius: 0.25rem; border: none; font-size: 0.875rem; cursor: pointer;">
+                                        <i class="fas fa-trash"></i> حذف
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ${showDetails ? `
+                            <div class="ad-meta" style="display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; font-size: 0.75rem; color: #6b7280;">
+                                <span><i class="far fa-clock"></i> ${formatDate(ad.created_at)}</span>
+                                <span><i class="far fa-user"></i> ${ad.user_name || 'فروشنده'}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // پاک کردن فیلترها
+        function clearFilters() {
+            document.getElementById('search-input').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('sort-filter').value = 'newest';
+            filterAds();
+        }
+        
+        // تنظیم فرم ثبت آگهی
+        function setupAddAdForm() {
+            if (currentUser) {
+                document.getElementById('ad-phone').value = currentUser.phone;
+            }
+        }
+        
+        // ایجاد آگهی جدید
+        async function createAd() {
+            if (!currentUser) {
+                alert('لطفا ابتدا وارد شوید');
+                showPage('login');
+                return;
+            }
+            
+            const adName = document.getElementById('ad-name').value.trim();
+            const adPrice = document.getElementById('ad-price').value;
+            const adPhone = document.getElementById('ad-phone').value.trim();
+            const adDescription = document.getElementById('ad-description').value.trim();
+            const adCategory = document.getElementById('ad-category').value;
+            const adCity = document.getElementById('ad-city').value.trim();
+            
+            // اعتبارسنجی
+            let isValid = true;
+            
+            // اعتبارسنجی عنوان
+            if (adName.length < 5) {
+                document.getElementById('ad-name-error').textContent = 'عنوان باید حداقل ۵ کاراکتر باشد';
+                isValid = false;
+            } else {
+                document.getElementById('ad-name-error').textContent = '';
+            }
+            
+            // اعتبارسنجی قیمت
+            if (!adPrice || parseInt(adPrice) <= 0) {
+                document.getElementById('ad-price-error').textContent = 'قیمت معتبر وارد کنید';
+                isValid = false;
+            } else {
+                document.getElementById('ad-price-error').textContent = '';
+            }
+            
+            // اعتبارسنجی شماره تلفن
+            const phoneRegex = /^09[0-9]{9}$/;
+            if (!phoneRegex.test(adPhone)) {
+                document.getElementById('ad-phone-error').textContent = 'شماره تلفن معتبر نیست';
+                isValid = false;
+            } else {
+                document.getElementById('ad-phone-error').textContent = '';
+            }
+            
+            // اعتبارسنجی توضیحات
+            if (adDescription.length < 10) {
+                document.getElementById('ad-description-error').textContent = 'توضیحات باید حداقل ۱۰ کاراکتر باشد';
+                isValid = false;
+            } else {
+                document.getElementById('ad-description-error').textContent = '';
+            }
+            
+            if (!isValid) return;
+            
+            // بررسی کلمات غیرمجاز
+            const badWords = ['فحش', 'کلمه بد', 'توهین', 'خر', 'حیوان', 'احمق'];
+            const hasBadWord = badWords.some(word => 
+                adName.toLowerCase().includes(word.toLowerCase()) || 
+                adDescription.toLowerCase().includes(word.toLowerCase())
+            );
+            
+            if (hasBadWord) {
+                alert('آگهی شما حاوی کلمات غیرمجاز است. لطفاً متن آگهی را ویرایش کنید.');
+                return;
+            }
+            
+            try {
+                // ایجاد آگهی جدید
+                const newAd = {
+                    id: Date.now().toString(),
+                    nameag: adName,
+                    price: parseInt(adPrice),
+                    phoneag: adPhone,
+                    rules: adDescription,
+                    category: adCategory,
+                    city: adCity,
+                    user_name: currentUser.name,
+                    user_phone: currentUser.phone,
+                    created_at: new Date().toISOString(),
+                    views: 0
+                };
+                
+                // ارسال آگهی به Google Sheets
+                const response = await callAPI(`${API_URL}?sheet=ads`, 'POST', {
+                    data: [newAd]
+                });
+                
+                if (response && response.created > 0) {
+                    alert('آگهی شما با موفقیت ثبت شد!');
+                    showPage('dashboard');
+                } else {
+                    throw new Error('خطا در ثبت آگهی');
+                }
+            } catch (error) {
+                console.error('Create Ad Error:', error);
+                alert('خطا در ثبت آگهی. لطفاً دوباره تلاش کنید.');
+            }
+        }
+        
+        // ویرایش آگهی
+        async function editAd(adId) {
+            alert('قابلیت ویرایش در نسخه نمایشی فعال نیست. در نسخه کامل این قابلیت اضافه خواهد شد.');
+        }
+        
+        // حذف آگهی
+        async function deleteAd(adId) {
+            if (!confirm('آیا مطمئن هستید که می‌خواهید این آگهی را حذف کنید؟')) {
+                return;
+            }
+            
+            try {
+                // حذف آگهی از Google Sheets
+                // توجه: SheetDB API از حذف بر اساس ID پشتیبانی می‌کند
+                const response = await callAPI(`${API_URL}/id/${adId}?sheet=ads`, 'DELETE');
+                
+                if (response && response.deleted > 0) {
+                    alert('آگهی با موفقیت حذف شد');
+                    
+                    // به‌روزرسانی نمایش
+                    if (document.getElementById('dashboard-page').classList.contains('active')) {
+                        loadUserDashboard();
+                    } else {
+                        loadAllAds();
+                    }
+                } else {
+                    throw new Error('خطا در حذف آگهی');
+                }
+            } catch (error) {
+                console.error('Delete Ad Error:', error);
+                alert('خطا در حذف آگهی. لطفاً دوباره تلاش کنید.');
+            }
+        }
+        
+        // بارگذاری داشبورد کاربر
+        async function loadUserDashboard() {
+            if (!currentUser) return;
+            
+            // نمایش اطلاعات کاربر
+            document.getElementById('user-greeting').textContent = `خوش آمدید، ${currentUser.name}!`;
+            document.getElementById('user-phone-display').textContent = currentUser.phone;
+            
+            try {
+                // دریافت آگهی‌های کاربر
+                const adsResponse = await callAPI(`${API_URL}?sheet=ads`);
+                const allAds = Array.isArray(adsResponse) ? adsResponse : [];
+                
+                // فیلتر کردن آگهی‌های کاربر
+                const userAds = allAds.filter(ad => ad.user_phone === currentUser.phone);
+                const totalViews = userAds.reduce((sum, ad) => sum + (parseInt(ad.views) || 0), 0);
+                
+                // نمایش آمار
+                document.getElementById('active-ads').textContent = userAds.length;
+                document.getElementById('total-views').textContent = totalViews;
+                document.getElementById('join-date').textContent = formatDate(currentUser.createdAt);
+                
+                // نمایش آگهی‌های کاربر
+                const container = document.getElementById('user-ads-container');
+                const noAdsMessage = document.getElementById('no-ads-message');
+                
+                if (userAds.length > 0) {
+                    container.innerHTML = '';
+                    userAds.forEach(ad => {
+                        const adCard = createAdCard(ad, false);
+                        container.innerHTML += adCard;
+                    });
+                    noAdsMessage.style.display = 'none';
+                } else {
+                    container.innerHTML = '';
+                    noAdsMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Load Dashboard Error:', error);
+                document.getElementById('user-ads-container').innerHTML = '<p style="text-align: center; padding: 2rem; color: #ef4444;">خطا در بارگذاری اطلاعات</p>';
+            }
+        }
+        
+        // فرمت تاریخ
+        function formatDate(dateString) {
+            if (!dateString) return 'امروز';
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('fa-IR', options);
+        }
+        
+        // نمایش فرم ثبت‌نام
+        function showRegisterForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+        
+        // نمایش فرم ورود
+        function showLoginForm() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
         }
     </script>
 </body>
-</html>
+    </html>
